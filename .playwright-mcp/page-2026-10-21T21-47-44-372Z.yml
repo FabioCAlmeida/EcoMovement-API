@@ -1,0 +1,15 @@
+- generic [ref=f4e2]:
+  - generic [ref=f4e5]:
+    - generic [ref=f4e6]:
+      - heading "EcoMovement" [level=1] [ref=f4e7]
+      - paragraph [ref=f4e8]:
+        - text: Pequenas
+        - strong [ref=f4e9]: ações
+        - text: geram grandes
+        - strong [ref=f4e10]: impactos
+      - paragraph [ref=f4e11]: Acumule pontos no dia a dia. Transforme seu estilo de vida e suas ações em impacto real. Veja sua árvore crescer junto com o mundo que você melhora.
+      - button "Entrar" [ref=f4e13] [cursor=pointer]
+    - img "Pessoa sorrindo enquanto usa o celular e segura um cartão, representando as ações do dia a dia" [ref=f4e15]
+  - generic [ref=f4e16]:
+    - generic [aria-hidden]: Fazer missão
+    - button "Fazer missão" [ref=f4e17] [cursor=pointer]

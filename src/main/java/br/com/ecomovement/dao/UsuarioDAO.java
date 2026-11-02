@@ -47,4 +47,19 @@ public class UsuarioDAO {
             }
         }
     }
+
+    public Long inserir(String nome, String email, String senhaHash) throws SQLException {
+        String sql = "INSERT INTO T_ECMV_USUARIO (NM_USUARIO, EMAIL_USUARIO, SENHA_HASH_USUARIO, ID_ROLE) "
+                + "VALUES (?, ?, ?, (SELECT ID_ROLE FROM T_ECMV_ROLE WHERE NM_ROLE = 'USUARIO'))";
+        try (Connection conn = connectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql, new String[]{"ID_USUARIO"})) {
+            stmt.setString(1, nome);
+            stmt.setString(2, email);
+            stmt.setString(3, senhaHash);
+            stmt.executeUpdate();
+            try (ResultSet chave = stmt.getGeneratedKeys()) {
+                return chave.next() ? chave.getLong(1) : null;
+            }
+        }
+    }
 }

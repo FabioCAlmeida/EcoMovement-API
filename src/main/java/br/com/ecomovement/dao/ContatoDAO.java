@@ -44,4 +44,31 @@ public class ContatoDAO {
         }
         return lista;
     }
+
+    public Contato buscarPorId(Long id) throws SQLException {
+        String sql = "SELECT ID_CONTATO, NM_CONTATO, EMAIL_CONTATO, MENSAGEM_CONTATO FROM T_ECMV_CONTATO "
+                + "WHERE ID_CONTATO = ?";
+        try (Connection conn = connectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setLong(1, id);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (!rs.next()) {
+                    return null;
+                }
+                Contato contato = new Contato(rs.getString("NM_CONTATO"), rs.getString("EMAIL_CONTATO"),
+                        rs.getString("MENSAGEM_CONTATO"));
+                contato.setId(rs.getLong("ID_CONTATO"));
+                return contato;
+            }
+        }
+    }
+
+    public int excluir(Long id) throws SQLException {
+        String sql = "DELETE FROM T_ECMV_CONTATO WHERE ID_CONTATO = ?";
+        try (Connection conn = connectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setLong(1, id);
+            return stmt.executeUpdate();
+        }
+    }
 }

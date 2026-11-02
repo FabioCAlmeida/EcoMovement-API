@@ -2,10 +2,12 @@ package br.com.ecomovement.bo;
 
 import br.com.ecomovement.dao.MovimentoEcopointsDAO;
 import br.com.ecomovement.dao.UsuarioDAO;
+import br.com.ecomovement.exception.ConflitoException;
 import br.com.ecomovement.exception.NaoAutorizadoException;
 import br.com.ecomovement.exception.NaoEncontradoException;
 import br.com.ecomovement.exception.RegraNegocioException;
 import br.com.ecomovement.model.LoginAdmin;
+import br.com.ecomovement.model.NovoUsuario;
 import br.com.ecomovement.model.PosicaoRanking;
 import br.com.ecomovement.model.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +51,35 @@ public class UsuarioBO {
             atual.setPosicao(empatado ? ranking.get(i - 1).getPosicao() : i + 1);
         }
         return ranking;
+    }
+
+    public Usuario cadastrar(NovoUsuario novo) throws SQLException {
+        if (novo == null || vazio(novo.nome()) || vazio(novo.email()) || vazio(novo.senha())) {
+            throw new RegraNegocioException("Preencha nome, e-mail e senha.");
+        }
+        String nome = novo.nome().trim();
+        String email = novo.email().trim();
+        if (nome.length() < 2 || nome.length() > 150) {
+            throw new RegraNegocioException("O nome deve ter entre 2 e 150 caracteres.");
+        }
+        if (email.length() > 150 || !email.matches("\\S+@\\S+\\.\\S+")) {
+            throw new RegraNegocioException("Informe um e-mail válido.");
+        }
+        if (novo.senha().length() < 6 || novo.senha().length() > 72) {
+            throw new RegraNegocioException("A senha deve ter entre 6 e 72 caracteres.");
+        }
+        if (usuarioDAO.buscarPorEmail(email) != null) {
+            throw new ConflitoException("Já existe um usuário cadastrado com este e-mail.");
+        }
+        try {
+            Long id = usuarioDAO.inserir(nome, email, gerarHash(novo.senha()));
+            return buscar(id);
+        } catch (SQLException e) {
+            if (e.getErrorCode() == 1) { // ORA-00001: e-mail cadastrado por outra requisição ao mesmo tempo
+                throw new ConflitoException("Já existe um usuário cadastrado com este e-mail.");
+            }
+            throw e;
+        }
     }
 
     public Usuario loginAdmin(LoginAdmin login) throws SQLException {

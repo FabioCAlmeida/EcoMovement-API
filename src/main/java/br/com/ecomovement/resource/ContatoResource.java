@@ -5,7 +5,9 @@ import br.com.ecomovement.model.Contato;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,5 +31,16 @@ public class ContatoResource {
     @GetMapping
     public List<Contato> listar() throws SQLException {
         return contatoBO.listar();
+    }
+
+    @GetMapping("/{id}")
+    public Contato buscar(@PathVariable Long id) throws SQLException {
+        return contatoBO.buscar(id);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> excluir(@PathVariable Long id) throws SQLException {
+        contatoBO.excluir(id);
+        return ResponseEntity.noContent().build();
     }
 }

@@ -1,6 +1,7 @@
 package br.com.ecomovement.bo;
 
 import br.com.ecomovement.dao.ContatoDAO;
+import br.com.ecomovement.exception.NaoEncontradoException;
 import br.com.ecomovement.exception.RegraNegocioException;
 import br.com.ecomovement.model.Contato;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,20 @@ public class ContatoBO {
 
     public List<Contato> listar() throws SQLException {
         return contatoDAO.listar();
+    }
+
+    public Contato buscar(Long id) throws SQLException {
+        Contato contato = contatoDAO.buscarPorId(id);
+        if (contato == null) {
+            throw new NaoEncontradoException("Contato " + id + " não encontrado.");
+        }
+        return contato;
+    }
+
+    public void excluir(Long id) throws SQLException {
+        if (contatoDAO.excluir(id) == 0) {
+            throw new NaoEncontradoException("Contato " + id + " não encontrado.");
+        }
     }
 
     private boolean vazio(String texto) {

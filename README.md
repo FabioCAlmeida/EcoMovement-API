@@ -1,7 +1,8 @@
 # EcoMovement API — Missões
 
-link da api: https://github.com/zanfolim07/Projeto-EcoMovement
+link da api: https://ecomovement-api.onrender.com
 link do deploy: https://projetoecomovement.vercel.app
+github da API: https://github.com/FabioCAlmeida/EcoMovement-API
 
 API Restful em **Java + Spring Boot** do EcoMovement (Sprint 04 — *Domain Driven Design Using Java*).
 Ela é consumida pelo front-end em React e guarda os dados no banco **Oracle**, usando as tabelas do

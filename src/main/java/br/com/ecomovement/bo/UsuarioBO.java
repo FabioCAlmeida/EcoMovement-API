@@ -6,10 +6,10 @@ import br.com.ecomovement.exception.ConflitoException;
 import br.com.ecomovement.exception.NaoAutorizadoException;
 import br.com.ecomovement.exception.NaoEncontradoException;
 import br.com.ecomovement.exception.RegraNegocioException;
-import br.com.ecomovement.model.LoginAdmin;
-import br.com.ecomovement.model.NovoUsuario;
-import br.com.ecomovement.model.PosicaoRanking;
-import br.com.ecomovement.model.Usuario;
+import model.LoginAdmin;
+import model.NovoUsuario;
+import model.PosicaoRanking;
+import model.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

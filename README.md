@@ -21,6 +21,7 @@ O usuário escolhe uma missão no site, envia uma **foto ou vídeo** como compro
 - Oracle Database (servidor da FIAP)
 - Swagger / OpenAPI (springdoc) para documentar e testar os endpoints
 - Maven
+- Docker e Render (deploy em nuvem)
 
 ## Estrutura do projeto
 
@@ -30,17 +31,21 @@ src/main/java/br/com/ecomovement
 ├── factory    ConnectionFactory           conexão com o Oracle
 ├── config     CorsFilter                  libera o front-end (CORS)
 ├── model      Missao, Submissao, Evidencia, ValidacaoEcoguard, MovimentoEcopoints,
-│              ProgressoMissao, Usuario, Contato, LoginAdmin, Arquivo
+│              ProgressoMissao, Usuario, NovoUsuario, Contato, LoginAdmin,
+│              PosicaoRanking, Arquivo
 ├── dao        um DAO por tabela, com o SQL (CRUD)
 ├── bo         MissaoBO, SubmissaoBO, UsuarioBO, ContatoBO (regras de negócio e validações)
 ├── resource   endpoints REST (@RestController)
-└── exception  exceções da API e o TratadorDeErros (respostas de erro em JSON)
+└── exception  RegraNegocioException, NaoEncontradoException, NaoAutorizadoException,
+               ConflitoException e o TratadorDeErros (respostas de erro em JSON)
 
 database/
 ├── 01_criacao_tabelas.sql   cria as tabelas iniciais
-├── 02_alteracoes_mer.sql    colunas e tabelas adicionadas ao MER da Sprint 3  
-├── 03_carga_dados.sql        carga inicial (5 ou mais registros por tabela)
-└── 04_consultas.sql       consultas com JOIN, GROUP BY, funções de agregação e WHERE
+├── 02_alteracoes_mer.sql    colunas e tabelas adicionadas ao MER da Sprint 3
+├── 03_carga_dados.sql       carga inicial (5 ou mais registros por tabela)
+└── 04_consultas.sql         consultas com JOIN, GROUP BY, funções de agregação e WHERE
+
+Dockerfile                   empacota a API para o deploy (Render)
 ```
 
 Caminho de uma requisição: **resource** recebe → **bo** valida as regras → **dao** executa o SQL → Oracle.
@@ -60,15 +65,16 @@ Caminho de uma requisição: **resource** recebe → **bo** valida as regras →
 
 No SQL Developer, abra e rode com **F5 (Executar Script)**, nesta ordem:
 
-1. **`database/01_criacao_tabelas.sql`** — cria as tabelas do MER (T_ECMV_...). Rode uma vez, em um schema sem 
-essas tabelas (se elas já existirem, dá erro ORA-00955).
-2. **`database/02_alteracoes_mer.sql`** — rode uma vez depois do 01 (adiciona as colunas novas).
-3. **`database/03_carga_dados.sql`** — insere os dados. Pode rodar de novo: ele limpa e insere tudo outra vez.
-4. **`database/04_consultas.sql`** — faz uma consulta das tabelas e os dados atuais do sistema
+1. **`database/01_criacao_tabelas.sql`** — cria as tabelas do MER (T_ECMV_...). Rode uma vez, em um schema sem
+   essas tabelas (se elas já existirem, dá erro ORA-00955).
+2. **`database/02_alteracoes_mer.sql`** — rode uma vez depois do 01 (adiciona as colunas e tabelas novas).
+3. **`database/03_carga_dados.sql`** — insere os dados. Pode rodar de novo: ele limpa e insere tudo outra vez
+   (apaga também os envios e pontos que você tiver feito).
+4. **`database/04_consultas.sql`** — só faz consultas nas tabelas e mostra os dados atuais do sistema.
 
-Depois disso, o **`database/03_carga_dados.sql`** só faz consultas (pode rodar à vontade).
+O **`database/04_consultas.sql`** não altera nada: pode rodar à vontade.
 
-Usuários criados pela carga:
+Usuários criados pela carga (contas de demonstração, apenas para testes):
 
 | Usuário | E-mail | Senha | Perfil |
 |---|---|---|---|
@@ -85,7 +91,7 @@ DB_USER=rm123456
 DB_PASSWORD=sua_senha
 ```
 
-> O `.env` não vai para o GitHub (está no `.gitignore`).
+> O `.env` não vai para o GitHub (está no `.gitignore`). Nunca coloque a senha real no repositório.
 
 ### 3. Iniciar a API
 
@@ -105,7 +111,7 @@ Deixe esse terminal aberto enquanto usa o site.
 
 ### 4. Iniciar o site (React)
 
-Baixe o front-end: https://github.com/zanfolim07/teste-ecomovement-react
+Baixe o front-end: https://github.com/zanfolim07/Projeto-EcoMovement
 
 Em **outro terminal**, na pasta do front:
 
@@ -114,14 +120,21 @@ npm install
 cp .env.example .env.local
 ```
 
-No `.env.local`, coloque o endereço da API:
+No `.env.local`, coloque o endereço da API (local ou a publicada):
 
 ```
 VITE_API_URL=http://localhost:8080
 VITE_USUARIO_ID=1
 ```
 
-E rode `npm run dev`. Abra **http://localhost:5173** (a API só aceita o site nessa porta).
+Para usar a API publicada, troque o endereço por `https://ecomovement-api.onrender.com`.
+
+E rode `npm run dev`. Abra **http://localhost:5173**.
+
+> **CORS:** por padrão, a API aceita apenas os sites em `http://localhost:5173` e `http://127.0.0.1:5173`.
+> Para liberar outros endereços (outra porta, o site da Vercel etc.), defina a variável `CORS_ORIGINS` com a
+> lista separada por vírgula, sem barra no final. Exemplo:
+> `CORS_ORIGINS=http://localhost:5173,http://localhost:5174,https://seu-site.vercel.app`
 
 ### 5. Testar o fluxo completo
 
@@ -129,7 +142,8 @@ E rode `npm run dev`. Abra **http://localhost:5173** (a API só aceita o site ne
 2. Abra **http://localhost:5173/admin** e entre com `ecomovement@admin.com` / `1234`.
 3. Em **Em análise**, veja a evidência e clique em **Aprovar**.
 4. Volte em **Missões**: a missão aparece como concluída e os pontos aumentam.
-5. No SQL Developer, rode o `database/03_carga_dados.sql` para ver os dados gravados no Oracle.
+5. No SQL Developer, rode o `database/04_consultas.sql` para ver os dados gravados no Oracle.
+   (Não rode o `03_carga_dados.sql`: ele apaga os dados do teste.)
 
 ### Resumo: o que precisa ficar aberto
 
@@ -139,7 +153,7 @@ E rode `npm run dev`. Abra **http://localhost:5173** (a API só aceita o site ne
 | API (`mvn spring-boot:run`) | **Sim**, em um terminal |
 | Site (`npm run dev`) | **Sim**, em outro terminal |
 
-Depois do deploy (API no Railway/Render e site na Vercel), nada precisa ficar aberto no seu computador.
+Depois do deploy (API no Render e site na Vercel), nada precisa ficar aberto no seu computador.
 
 ---
 
@@ -174,6 +188,8 @@ Depois do deploy (API no Railway/Render e site na Vercel), nada precisa ficar ab
 
 | Verbo  | URI                           | Descrição                                   | Status |
 |--------|-------------------------------|---------------------------------------------|--------|
+| POST   | `/usuarios`                   | Cadastra um usuário (`{ "nome", "email", "senha" }`) | 201, 400, 409 |
+| GET    | `/usuarios/{id}`              | Detalhe de um usuário                       | 200, 404 |
 | GET    | `/usuarios/{id}/submissoes`   | Histórico de envios do usuário              | 200, 404 |
 | DELETE | `/usuarios/{id}/submissoes`   | Reinicia o teste: apaga os envios de foto/vídeo do usuário | 200, 404 |
 | GET    | `/usuarios/{id}/pontos`       | Saldo de EcoPoints: `{ "total": 20 }`       | 200, 404 |
@@ -181,12 +197,26 @@ Depois do deploy (API no Railway/Render e site na Vercel), nada precisa ficar ab
 | POST   | `/admin/login`                | Login do Painel EcoGuard (`{ "email", "senha" }`) | 200, 400, 401 |
 | POST   | `/contatos`                   | Salva a mensagem do formulário de contato   | 201, 400 |
 | GET    | `/contatos`                   | Lista as mensagens recebidas                | 200 |
+| GET    | `/contatos/{id}`              | Detalhe de uma mensagem de contato          | 200, 404 |
+| DELETE | `/contatos/{id}`              | Exclui uma mensagem de contato              | 204, 404 |
 
-Em caso de erro no banco a API responde **500**. Todos os erros vêm em JSON:
+### Códigos de erro
+
+Todos os erros vêm em JSON, no mesmo formato:
 
 ```json
 { "status": 400, "mensagem": "Esta missão exige evidência do tipo VIDEO." }
 ```
+
+| Código | Quando acontece |
+|---|---|
+| 400 | Regra de negócio violada ou requisição inválida (parâmetro ausente, JSON malformado, arquivo grande) |
+| 401 | E-mail ou senha incorretos, ou usuário sem perfil ADMIN |
+| 404 | Recurso ou rota não encontrada |
+| 405 | Método HTTP não permitido para o endereço |
+| 409 | Conflito: já existe um usuário com o e-mail informado |
+| 415 | Tipo de conteúdo (`Content-Type`) não suportado |
+| 500 | Erro de banco de dados ou erro inesperado no servidor (a mensagem é genérica; o detalhe fica no log) |
 
 ---
 
@@ -204,11 +234,13 @@ Em caso de erro no banco a API responde **500**. Todos os erros vêm em JSON:
   120, 90, 60 e 30 pontos. Em qualquer ordem, cada missão aprovada no `/admin` faz o usuário de teste passar
   uma pessoa, e ao concluir as 4 missões (130 pontos) ele chega ao 1º lugar.
 - Missão com envios não pode ser excluída (perderia o histórico): ela deve ser **desativada**.
+- **Cadastro de usuário:** nome de 2 a 150 caracteres, e-mail válido e único (repetido responde 409) e senha de
+  6 a 72 caracteres, salva em hash SHA-256 com o perfil USUARIO.
 - O login do admin confere a senha pelo hash **SHA-256** salvo no banco e exige o perfil **ADMIN**.
 
 ## Ajustes no MER
 
-Para atender o site, o `01_criacao_tabelas.sql` adiciona ao modelo da Sprint 3:
+Para atender o site, o `02_alteracoes_mer.sql` adiciona ao modelo da Sprint 3:
 
 | Tabela | O que foi adicionado |
 |---|---|
@@ -221,7 +253,22 @@ Para atender o site, o `01_criacao_tabelas.sql` adiciona ao modelo da Sprint 3:
 
 ## Deploy
 
-URL da API publicada: _(preencher depois do deploy no Railway/Render)_
+A API está publicada no **Render** (Web Service com Docker, usando o `Dockerfile` da raiz).
 
-Variáveis de ambiente usadas no servidor: `DB_URL`, `DB_USER`, `DB_PASSWORD`, `API_URL`
-(endereço público da API) e `CORS_ORIGINS` (endereço do site na Vercel).
+| Item | Endereço |
+|---|---|
+| URL da API | https://ecomovement-api.onrender.com |
+| Swagger (documentação) | https://ecomovement-api.onrender.com/swagger-ui.html |
+| Repositório da API | https://github.com/FabioCAlmeida/EcoMovement-API |
+| Repositório do front-end | https://github.com/zanfolim07/Projeto-EcoMovement |
+| Site na Vercel | _(preencher: URL do site na Vercel)_ |
+
+> O plano gratuito do Render hiberna depois de alguns minutos sem uso: a primeira requisição pode levar cerca de 1 minuto.
+
+Variáveis de ambiente configuradas no servidor (os valores ficam só no painel do Render):
+
+| Variável | Descrição |
+|---|---|
+| `DB_URL`, `DB_USER`, `DB_PASSWORD` | Conexão com o Oracle |
+| `API_URL` | Endereço público da API (usado para montar as URLs de imagens e evidências) |
+| `CORS_ORIGINS` | Endereços dos sites autorizados a chamar a API, separados por vírgula |

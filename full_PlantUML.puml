@@ -1,0 +1,255 @@
+@startuml
+class br.com.ecomovement.dao.ProgressoMissaoDAO {
+- ConnectionFactory connectionFactory
++ List<ProgressoMissao> listarPorUsuario(Long)
+}
+
+
+class br.com.ecomovement.exception.NaoEncontradoException {
+}
+class br.com.ecomovement.resource.UsuarioResource {
+- SubmissaoBO submissaoBO
+- UsuarioBO usuarioBO
++ ResponseEntity<Usuario> cadastrar(NovoUsuario)
++ Usuario buscar(Long)
++ List<Submissao> submissoes(Long)
++ Map<String,Integer> reiniciar(Long)
++ Map<String,Integer> pontos(Long)
+}
+
+
+class br.com.ecomovement.bo.SubmissaoBO {
+- {static} int TAMANHO_MAXIMO
+- {static} List<String> STATUS
+- SubmissaoDAO submissaoDAO
+- EvidenciaDAO evidenciaDAO
+- ValidacaoEcoguardDAO validacaoDAO
+- MovimentoEcopointsDAO movimentoDAO
+- MissaoBO missaoBO
+- UsuarioBO usuarioBO
+- String urlApi
++ Submissao enviar(Long,Long,String,Integer,byte[],String)
++ List<Submissao> listarDoUsuario(Long)
++ List<Submissao> listarPorStatus(String)
++ Submissao buscar(Long)
++ Submissao aprovar(Long)
++ Submissao rejeitar(Long)
++ void excluir(Long)
++ int reiniciarDoUsuario(Long)
++ Arquivo buscarEvidencia(Long)
+- Submissao buscarEmAnalise(Long)
+- void validarEvidencia(Missao,String,Integer,byte[],String)
+- List<Submissao> completarUrls(List<Submissao>)
+}
+
+
+class br.com.ecomovement.exception.RegraNegocioException {
+}
+class br.com.ecomovement.dao.ValidacaoEcoguardDAO {
+- ConnectionFactory connectionFactory
++ void inserir(ValidacaoEcoguard)
+}
+
+
+class br.com.ecomovement.resource.SubmissaoResource {
+- SubmissaoBO submissaoBO
++ ResponseEntity<Submissao> enviar(Long,Long,String,Integer,MultipartFile)
++ List<Submissao> listar(String)
++ Submissao buscar(Long)
++ ResponseEntity<byte[]> evidencia(Long)
++ Submissao aprovar(Long)
++ Submissao rejeitar(Long)
++ ResponseEntity<Void> excluir(Long)
+}
+
+
+class br.com.ecomovement.exception.NaoAutorizadoException {
+}
+class br.com.ecomovement.resource.MissaoResource {
+- MissaoBO missaoBO
++ List<Missao> listar(Long)
++ Missao buscar(Long,Long)
++ ResponseEntity<Missao> cadastrar(Missao)
++ Missao atualizar(Long,Missao)
++ ResponseEntity<Void> excluir(Long)
++ ResponseEntity<byte[]> imagem(Long)
++ ResponseEntity<Void> enviarImagem(Long,byte[],String)
+}
+
+
+class br.com.ecomovement.resource.RankingResource {
+- UsuarioBO usuarioBO
++ List<PosicaoRanking> listar()
+}
+
+
+class br.com.ecomovement.factory.ConnectionFactory {
+- String url
+- String usuario
+- String senha
++ Connection getConnection()
+}
+
+
+class br.com.ecomovement.dao.ContatoDAO {
+- ConnectionFactory connectionFactory
++ void inserir(Contato)
++ List<Contato> listar()
++ Contato buscarPorId(Long)
++ int excluir(Long)
+}
+
+
+class br.com.ecomovement.bo.ContatoBO {
+- ContatoDAO contatoDAO
++ void enviar(Contato)
++ List<Contato> listar()
++ Contato buscar(Long)
++ void excluir(Long)
+- boolean vazio(String)
+}
+
+
+class br.com.ecomovement.bo.UsuarioBO {
+- UsuarioDAO usuarioDAO
+- MovimentoEcopointsDAO movimentoDAO
++ Usuario buscar(Long)
++ int somarPontos(Long)
++ List<PosicaoRanking> ranking()
++ Usuario cadastrar(NovoUsuario)
++ Usuario loginAdmin(LoginAdmin)
+- String gerarHash(String)
+- boolean vazio(String)
+}
+
+
+class br.com.ecomovement.exception.ConflitoException {
+}
+class br.com.ecomovement.dao.UsuarioDAO {
+- {static} String SELECT
+- ConnectionFactory connectionFactory
++ Usuario buscarPorId(Long)
++ Usuario buscarPorEmail(String)
+- Usuario buscar(String,Object)
++ Long inserir(String,String,String)
+}
+
+
+class br.com.ecomovement.dao.MissaoDAO {
+- {static} String SELECT
+- ConnectionFactory connectionFactory
++ List<Missao> listar(boolean)
++ Missao buscarPorId(Long)
++ Long inserir(Missao)
++ void atualizar(Missao)
++ void excluir(Long)
++ boolean possuiSubmissoes(Long)
++ Arquivo buscarImagem(Long)
++ void salvarImagem(Long,Arquivo)
+- void preencher(PreparedStatement,Missao)
+- Missao montar(ResultSet)
+- void executar(Connection,String,Long)
+}
+
+
+class br.com.ecomovement.dao.MovimentoEcopointsDAO {
+- ConnectionFactory connectionFactory
++ void inserir(MovimentoEcopoints)
++ int somarPontosDoUsuario(Long)
++ List<PosicaoRanking> listarPontosPorUsuario()
+}
+
+
+class br.com.ecomovement.resource.ContatoResource {
+- ContatoBO contatoBO
++ ResponseEntity<Void> enviar(Contato)
++ List<Contato> listar()
++ Contato buscar(Long)
++ ResponseEntity<Void> excluir(Long)
+}
+
+
+class br.com.ecomovement.dao.SubmissaoDAO {
+- {static} String SELECT
+- ConnectionFactory connectionFactory
++ List<Submissao> listarPorUsuario(Long)
++ List<Submissao> listarPorStatus(String)
++ Submissao buscarPorId(Long)
++ Long inserir(Submissao)
++ void atualizarStatus(Long,String)
++ void excluir(Long)
+- List<Submissao> listar(String,Object)
+- Submissao montar(ResultSet)
+- void executar(Connection,String,Long)
+}
+
+
+class br.com.ecomovement.resource.InicioResource {
++ Map<String,String> inicio()
+}
+
+class br.com.ecomovement.dao.EvidenciaDAO {
+- ConnectionFactory connectionFactory
++ void inserir(Evidencia)
++ Arquivo buscarArquivoDaSubmissao(Long)
+}
+
+
+class br.com.ecomovement.bo.MissaoBO {
+- {static} List<String> DIFICULDADES
+- {static} List<String> TIPOS_EVIDENCIA
+- MissaoDAO missaoDAO
+- SubmissaoDAO submissaoDAO
+- ProgressoMissaoDAO progressoDAO
+- UsuarioBO usuarioBO
+- String urlApi
++ List<Missao> listar(Long)
++ Missao buscar(Long,Long)
++ Missao cadastrar(Missao)
++ Missao atualizar(Long,Missao)
++ void excluir(Long)
++ Arquivo buscarImagem(Long)
++ void salvarImagem(Long,byte[],String)
+~ Missao buscarMissao(Long)
+- void calcularStatus(Missao,List<Submissao>,List<ProgressoMissao>)
+- void validar(Missao)
+- void completarImagem(Missao)
+- boolean vazio(String)
+}
+
+
+class br.com.ecomovement.config.CorsFilter {
+- String origens
++ void doFilter(ServletRequest,ServletResponse,FilterChain)
+}
+
+
+class br.com.ecomovement.exception.TratadorDeErros {
+- {static} Logger log
++ ResponseEntity<Map<String,Object>> regraNegocio(RegraNegocioException)
++ ResponseEntity<Map<String,Object>> naoEncontrado(NaoEncontradoException)
++ ResponseEntity<Map<String,Object>> naoAutorizado(NaoAutorizadoException)
++ ResponseEntity<Map<String,Object>> conflito(ConflitoException)
++ ResponseEntity<Map<String,Object>> requisicaoInvalida(Exception)
++ ResponseEntity<Map<String,Object>> arquivoGrande(MaxUploadSizeExceededException)
++ ResponseEntity<Map<String,Object>> erroBanco(SQLException)
++ ResponseEntity<Map<String,Object>> erroInesperado(Exception)
+- String mensagemPadrao(HttpStatus)
+- ResponseEntity<Map<String,Object>> resposta(HttpStatus,String)
+}
+
+
+class br.com.ecomovement.resource.AdminResource {
+- UsuarioBO usuarioBO
++ Map<String,Object> login(LoginAdmin)
+}
+
+
+
+
+br.com.ecomovement.exception.RuntimeException <|-- br.com.ecomovement.exception.NaoEncontradoException
+br.com.ecomovement.exception.RuntimeException <|-- br.com.ecomovement.exception.RegraNegocioException
+br.com.ecomovement.exception.RuntimeException <|-- br.com.ecomovement.exception.NaoAutorizadoException
+br.com.ecomovement.exception.RuntimeException <|-- br.com.ecomovement.exception.ConflitoException
+jakarta.servlet.Filter <|.. br.com.ecomovement.config.CorsFilter
+@enduml

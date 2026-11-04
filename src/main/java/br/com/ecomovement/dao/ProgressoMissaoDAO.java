@@ -1,7 +1,7 @@
 package br.com.ecomovement.dao;
 
 import br.com.ecomovement.factory.ConnectionFactory;
-import br.com.ecomovement.model.ProgressoMissao;
+import model.ProgressoMissao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 

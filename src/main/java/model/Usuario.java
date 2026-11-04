@@ -1,4 +1,4 @@
-package br.com.ecomovement.model;
+package model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 

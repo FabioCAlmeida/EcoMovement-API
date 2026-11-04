@@ -1,8 +1,8 @@
 package br.com.ecomovement.resource;
 
 import br.com.ecomovement.bo.MissaoBO;
-import br.com.ecomovement.model.Arquivo;
-import br.com.ecomovement.model.Missao;
+import model.Arquivo;
+import model.Missao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;

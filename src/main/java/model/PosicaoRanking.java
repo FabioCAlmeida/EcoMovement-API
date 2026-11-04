@@ -1,4 +1,4 @@
-package br.com.ecomovement.model;
+package model;
 
 public class PosicaoRanking {
     private int posicao;

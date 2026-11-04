@@ -1,4 +1,4 @@
-package br.com.ecomovement.model;
+package model;
 
 import java.time.LocalDateTime;
 

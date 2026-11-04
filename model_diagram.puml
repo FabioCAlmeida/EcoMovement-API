@@ -1,0 +1,248 @@
+@startuml
+class model.MovimentoEcopoints {
+- Long id
+- Long submissaoId
+- String tipo
+- int quantidade
++ Long getId()
++ void setId(Long)
++ Long getSubmissaoId()
++ void setSubmissaoId(Long)
++ String getTipo()
++ void setTipo(String)
++ int getQuantidade()
++ void setQuantidade(int)
+}
+
+
+class model.ProgressoMissao {
+- Long usuarioId
+- Long missaoId
+- int quantidade
++ Long getUsuarioId()
++ void setUsuarioId(Long)
++ Long getMissaoId()
++ void setMissaoId(Long)
++ int getQuantidade()
++ void setQuantidade(int)
+}
+
+
+class model.Arquivo {
+- byte[] dados
+- String tipo
++ byte[] getDados()
++ String getTipo()
+}
+
+
+class model.Missao {
+- Long id
+- String titulo
+- String categoria
+- String descricao
+- String dificuldade
+- boolean ativa
+- String instrucoes
+- int pontos
+- String tipoEvidencia
+- int tempoMaximoSegundos
+- int meta
+- String imagemIlustrativa
+- int progresso
+- String status
++ boolean isAutomatica()
++ Long getId()
++ void setId(Long)
++ String getTitulo()
++ void setTitulo(String)
++ String getCategoria()
++ void setCategoria(String)
++ String getDescricao()
++ void setDescricao(String)
++ String getDificuldade()
++ void setDificuldade(String)
++ boolean isAtiva()
++ void setAtiva(boolean)
++ String getInstrucoes()
++ void setInstrucoes(String)
++ int getPontos()
++ void setPontos(int)
++ String getTipoEvidencia()
++ void setTipoEvidencia(String)
++ int getTempoMaximoSegundos()
++ void setTempoMaximoSegundos(int)
++ int getMeta()
++ void setMeta(int)
++ String getImagemIlustrativa()
++ void setImagemIlustrativa(String)
++ int getProgresso()
++ void setProgresso(int)
++ String getStatus()
++ void setStatus(String)
+}
+
+
+class model.Submissao {
+- Long id
+- Long usuarioId
+- Long missaoId
+- String status
+- LocalDateTime enviadaEm
+- String titulo
+- int pontos
+- String tipoEvidencia
+- Integer duracaoSegundos
+- LocalDateTime concluidaEm
+- String evidenciaUrl
++ Long getId()
++ void setId(Long)
++ Long getUsuarioId()
++ void setUsuarioId(Long)
++ Long getMissaoId()
++ void setMissaoId(Long)
++ String getStatus()
++ void setStatus(String)
++ LocalDateTime getEnviadaEm()
++ void setEnviadaEm(LocalDateTime)
++ String getTitulo()
++ void setTitulo(String)
++ int getPontos()
++ void setPontos(int)
++ String getTipoEvidencia()
++ void setTipoEvidencia(String)
++ Integer getDuracaoSegundos()
++ void setDuracaoSegundos(Integer)
++ LocalDateTime getConcluidaEm()
++ void setConcluidaEm(LocalDateTime)
++ String getEvidenciaUrl()
++ void setEvidenciaUrl(String)
+}
+
+
+class model.Contato {
+- Long id
+- String nome
+- String email
+- String mensagem
++ Long getId()
++ void setId(Long)
++ String getNome()
++ void setNome(String)
++ String getEmail()
++ void setEmail(String)
++ String getMensagem()
++ void setMensagem(String)
+}
+
+
+class model.Usuario {
+- Long id
+- String nome
+- String email
+- String senhaHash
+- LocalDateTime dataCadastro
+- Long roleId
+- String role
++ boolean isAdmin()
++ Long getId()
++ void setId(Long)
++ String getNome()
++ void setNome(String)
++ String getEmail()
++ void setEmail(String)
++ String getSenhaHash()
++ void setSenhaHash(String)
++ LocalDateTime getDataCadastro()
++ void setDataCadastro(LocalDateTime)
++ Long getRoleId()
++ void setRoleId(Long)
++ String getRole()
++ void setRole(String)
+}
+
+
+class model.Evidencia {
+- Long id
+- Long submissaoId
+- String tipo
+- String referenciaArquivo
+- LocalDateTime dataCaptura
+- byte[] arquivo
+- String tipoArquivo
+- Integer duracaoSegundos
++ Long getId()
++ void setId(Long)
++ Long getSubmissaoId()
++ void setSubmissaoId(Long)
++ String getTipo()
++ void setTipo(String)
++ String getReferenciaArquivo()
++ void setReferenciaArquivo(String)
++ LocalDateTime getDataCaptura()
++ void setDataCaptura(LocalDateTime)
++ byte[] getArquivo()
++ void setArquivo(byte[])
++ String getTipoArquivo()
++ void setTipoArquivo(String)
++ Integer getDuracaoSegundos()
++ void setDuracaoSegundos(Integer)
+}
+
+
+class model.LoginAdmin {
+- String email
+- String senha
++ String getEmail()
++ void setEmail(String)
++ String getSenha()
++ void setSenha(String)
+}
+
+
+class model.ValidacaoEcoguard {
+- Long id
+- Long submissaoId
+- String resultado
+- int scoreRisco
+- LocalDateTime data
++ Long getId()
++ void setId(Long)
++ Long getSubmissaoId()
++ void setSubmissaoId(Long)
++ String getResultado()
++ void setResultado(String)
++ int getScoreRisco()
++ void setScoreRisco(int)
++ LocalDateTime getData()
++ void setData(LocalDateTime)
+}
+
+
+class model.NovoUsuario {
+- String nome
+- String email
+- String senha
++ String nome()
++ String senha()
++ String email()
+}
+
+
+class model.PosicaoRanking {
+- int posicao
+- Long usuarioId
+- String nome
+- int pontos
++ int getPosicao()
++ void setPosicao(int)
++ Long getUsuarioId()
++ void setUsuarioId(Long)
++ String getNome()
++ void setNome(String)
++ int getPontos()
++ void setPontos(int)
+}
+
+
+@enduml

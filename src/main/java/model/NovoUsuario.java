@@ -1,4 +1,4 @@
-package br.com.ecomovement.model;
+package model;
 
 public record NovoUsuario(String nome, String email, String senha) {
 }

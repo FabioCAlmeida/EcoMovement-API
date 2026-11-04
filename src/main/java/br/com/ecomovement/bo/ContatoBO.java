@@ -3,7 +3,7 @@ package br.com.ecomovement.bo;
 import br.com.ecomovement.dao.ContatoDAO;
 import br.com.ecomovement.exception.NaoEncontradoException;
 import br.com.ecomovement.exception.RegraNegocioException;
-import br.com.ecomovement.model.Contato;
+import model.Contato;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

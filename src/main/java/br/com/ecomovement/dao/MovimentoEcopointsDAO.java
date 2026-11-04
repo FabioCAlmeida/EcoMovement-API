@@ -1,8 +1,8 @@
 package br.com.ecomovement.dao;
 
 import br.com.ecomovement.factory.ConnectionFactory;
-import br.com.ecomovement.model.MovimentoEcopoints;
-import br.com.ecomovement.model.PosicaoRanking;
+import model.MovimentoEcopoints;
+import model.PosicaoRanking;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 

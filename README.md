@@ -1,8 +1,6 @@
 # EcoMovement API — Missões
 
-link da api: https://ecomovement-api.onrender.com
-link do deploy: https://projetoecomovement.vercel.app
-github da API: https://github.com/FabioCAlmeida/EcoMovement-API
+
 
 API Restful em **Java + Spring Boot** do EcoMovement (Sprint 04 — *Domain Driven Design Using Java*).
 Ela é consumida pelo front-end em React e guarda os dados no banco **Oracle**, usando as tabelas do
@@ -265,7 +263,7 @@ A API está publicada no **Render** (Web Service com Docker, usando o `Dockerfil
 | Swagger (documentação) | https://ecomovement-api.onrender.com/swagger-ui.html |
 | Repositório da API | https://github.com/FabioCAlmeida/EcoMovement-API |
 | Repositório do front-end | https://github.com/zanfolim07/Projeto-EcoMovement |
-| Site na Vercel | _(preencher: URL do site na Vercel)_ |
+| Site na Vercel | https://projetoecomovement.vercel.app |
 
 > O plano gratuito do Render hiberna depois de alguns minutos sem uso: a primeira requisição pode levar cerca de 1 minuto.
 

@@ -30,7 +30,7 @@ src/main/java/br/com/ecomovement
 ├── EcomovementApplication.java   classe principal (inicia a API)
 ├── factory    ConnectionFactory           conexão com o Oracle
 ├── config     CorsFilter                  libera o front-end (CORS)
-├── model      Missao, Submissao, Evidencia, ValidacaoEcoguard, MovimentoEcopoints,
+├── br.com.ecomovement.model      Missao, Submissao, Evidencia, ValidacaoEcoguard, MovimentoEcopoints,
 │              ProgressoMissao, Usuario, NovoUsuario, Contato, LoginAdmin,
 │              PosicaoRanking, Arquivo
 ├── dao        um DAO por tabela, com o SQL (CRUD)

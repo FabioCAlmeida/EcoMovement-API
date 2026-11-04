@@ -1,8 +1,8 @@
 package br.com.ecomovement.resource;
 
 import br.com.ecomovement.bo.UsuarioBO;
-import model.LoginAdmin;
-import model.Usuario;
+import br.com.ecomovement.model.LoginAdmin;
+import br.com.ecomovement.model.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

@@ -2,9 +2,9 @@ package br.com.ecomovement.resource;
 
 import br.com.ecomovement.bo.SubmissaoBO;
 import br.com.ecomovement.bo.UsuarioBO;
-import model.NovoUsuario;
-import model.Submissao;
-import model.Usuario;
+import br.com.ecomovement.model.NovoUsuario;
+import br.com.ecomovement.model.Submissao;
+import br.com.ecomovement.model.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;

@@ -1,5 +1,5 @@
 @startuml
-class model.MovimentoEcopoints {
+class br.com.ecomovement.model.MovimentoEcopoints {
 - Long id
 - Long submissaoId
 - String tipo
@@ -15,7 +15,7 @@ class model.MovimentoEcopoints {
 }
 
 
-class model.ProgressoMissao {
+class br.com.ecomovement.model.ProgressoMissao {
 - Long usuarioId
 - Long missaoId
 - int quantidade
@@ -28,7 +28,7 @@ class model.ProgressoMissao {
 }
 
 
-class model.Arquivo {
+class br.com.ecomovement.model.Arquivo {
 - byte[] dados
 - String tipo
 + byte[] getDados()
@@ -36,7 +36,7 @@ class model.Arquivo {
 }
 
 
-class model.Missao {
+class br.com.ecomovement.model.Missao {
 - Long id
 - String titulo
 - String categoria
@@ -83,7 +83,7 @@ class model.Missao {
 }
 
 
-class model.Submissao {
+class br.com.ecomovement.model.Submissao {
 - Long id
 - Long usuarioId
 - Long missaoId
@@ -120,7 +120,7 @@ class model.Submissao {
 }
 
 
-class model.Contato {
+class br.com.ecomovement.model.Contato {
 - Long id
 - String nome
 - String email
@@ -136,7 +136,7 @@ class model.Contato {
 }
 
 
-class model.Usuario {
+class br.com.ecomovement.model.Usuario {
 - Long id
 - String nome
 - String email
@@ -162,7 +162,7 @@ class model.Usuario {
 }
 
 
-class model.Evidencia {
+class br.com.ecomovement.model.Evidencia {
 - Long id
 - Long submissaoId
 - String tipo
@@ -190,7 +190,7 @@ class model.Evidencia {
 }
 
 
-class model.LoginAdmin {
+class br.com.ecomovement.model.LoginAdmin {
 - String email
 - String senha
 + String getEmail()
@@ -200,7 +200,7 @@ class model.LoginAdmin {
 }
 
 
-class model.ValidacaoEcoguard {
+class br.com.ecomovement.model.ValidacaoEcoguard {
 - Long id
 - Long submissaoId
 - String resultado
@@ -219,7 +219,7 @@ class model.ValidacaoEcoguard {
 }
 
 
-class model.NovoUsuario {
+class br.com.ecomovement.model.NovoUsuario {
 - String nome
 - String email
 - String senha
@@ -229,7 +229,7 @@ class model.NovoUsuario {
 }
 
 
-class model.PosicaoRanking {
+class br.com.ecomovement.model.PosicaoRanking {
 - int posicao
 - Long usuarioId
 - String nome

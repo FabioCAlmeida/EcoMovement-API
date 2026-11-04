@@ -1,8 +1,8 @@
 package br.com.ecomovement.dao;
 
 import br.com.ecomovement.factory.ConnectionFactory;
-import model.Arquivo;
-import model.Missao;
+import br.com.ecomovement.model.Arquivo;
+import br.com.ecomovement.model.Missao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 

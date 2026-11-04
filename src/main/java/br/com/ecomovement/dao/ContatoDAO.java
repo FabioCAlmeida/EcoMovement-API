@@ -1,7 +1,7 @@
 package br.com.ecomovement.dao;
 
 import br.com.ecomovement.factory.ConnectionFactory;
-import model.Contato;
+import br.com.ecomovement.model.Contato;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 

@@ -1,4 +1,4 @@
-package model;
+package br.com.ecomovement.model;
 
 public class ProgressoMissao {
     private Long usuarioId;

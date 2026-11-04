@@ -1,4 +1,4 @@
-package model;
+package br.com.ecomovement.model;
 
 public class MovimentoEcopoints {
     private Long id;

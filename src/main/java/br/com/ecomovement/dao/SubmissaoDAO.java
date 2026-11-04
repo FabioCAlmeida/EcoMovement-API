@@ -1,7 +1,7 @@
 package br.com.ecomovement.dao;
 
 import br.com.ecomovement.factory.ConnectionFactory;
-import model.Submissao;
+import br.com.ecomovement.model.Submissao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
